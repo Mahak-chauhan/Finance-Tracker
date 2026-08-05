@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget | FinanceTracker</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --color-primary: #7380ec;
+            --color-danger: #ff7782;
+            --color-success: #41f1b6;
+            --color-warning: #ffbb55;
+            --color-white: #202528;
+            --color-info-dark: #7d8da1;
+            --color-dark: #edeffd;
+            --color-light: rgba(0, 0, 0, 0.4);
+            --color-background: #181a1e;
+            --card-border-radius: 2rem;
+            --card-padding: 1.8rem;
+            --box-shadow: 0 2rem 3rem var(--color-light);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            appearance: none;
+            border: 0;
+            text-decoration: none;
+            list-style: none;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            font-family: poppins, sans-serif;
+            font-size: 0.88rem;
+            background: var(--color-background);
+            user-select: none;
+            overflow-x: hidden;
+            color: var(--color-dark);
+        }
+
+        .container {
+            display: grid;
+            width: 96%;
+            margin: 0 auto;
+            gap: 1.8rem;
+            grid-template-columns: 14rem auto;
+        }
+
+        /* SIDEBAR */
+        aside {
+            height: 100vh;
+        }
+
+        aside .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1.4rem;
+        }
+
+        aside .sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 86vh;
+            position: relative;
+            top: 3rem;
+        }
+
+        aside .sidebar a {
+            display: flex;
+            color: var(--color-info-dark);
+            margin-left: 2rem;
+            gap: 1rem;
+            align-items: center;
+            height: 3.7rem;
+            transition: all 300ms ease;
+        }
+
+        aside .sidebar a span {
+            font-size: 1.6rem;
+        }
+
+        aside .sidebar a:hover {
+            color: var(--color-primary);
+            margin-left: 1rem;
+        }
+
+        aside .sidebar a.active {
+            background: var(--color-light);
+            color: var(--color-primary);
+            margin-left: 0;
+        }
+
+        aside .sidebar a.active:before {
+            content: '';
+            width: 6px;
+            height: 100%;
+            background: var(--color-primary);
+        }
+
+        aside .sidebar a.active span {
+            margin-left: calc(1rem - 3px);
+        }
+
+        /* MAIN CONTENT */
+        main {
+            margin-top: 1.4rem;
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        /* BUDGET FORM */
+        .budget-form {
+            background: var(--color-white);
+            padding: var(--card-padding);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--box-shadow);
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .input-group label {
+            margin-bottom: 0.5rem;
+            color: var(--color-info-dark);
+        }
+
+        .input-group input,
+        .input-group select {
+            padding: 1rem;
+            background: var(--color-background);
+            color: var(--color-dark);
+            border-radius: 0.4rem;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: #fff;
+            padding: 1rem 2rem;
+            border-radius: 0.4rem;
+            cursor: pointer;
+            font-weight: 600;
+            height: 50px;
+        }
+
+        /* BUDGET CARDS */
+        .budget-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .budget-card {
+            background: var(--color-white);
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .budget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .budget-header h3 {
+            font-size: 1.2rem;
+        }
+
+        .budget-amount {
+            font-size: 0.9rem;
+            color: var(--color-info-dark);
+        }
+
+        /* PROGRESS BAR */
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: var(--color-background);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .status-text {
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .over-budget {
+            color: var(--color-danger);
+            font-weight: bold;
+        }
+
+        .under-budget {
+            color: var(--color-success);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <span class="material-icons-sharp text-danger">account_balance_wallet</span>
+                    <h2>Fi<span class="text-danger">nance</span></h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">close</span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="dashboard.html" id="link-dashboard">
+                    <span class="material-icons-sharp">grid_view</span>
+                    <h3>Dashboard</h3>
+                </a>
+
+                <a href="profile.html" id="link-profile">
+                    <span class="material-icons-sharp">person</span>
+                    <h3>Profile</h3>
+                </a>
+
+                <a href="expenses.html" id="link-expenses">
+                    <span class="material-icons-sharp">money_off</span>
+                    <h3>Expenses</h3>
+                </a>
+                <a href="income.html" id="link-income">
+                    <span class="material-icons-sharp">attach_money</span>
+                    <h3>Income</h3>
+                </a>
+                <a href="transactions.html" id="link-transactions">
+                    <span class="material-icons-sharp">receipt_long</span>
+                    <h3>Transactions</h3>
+                </a>
+                <a href="budget.html" id="link-budget">
+                    <span class="material-icons-sharp">pie_chart</span>
+                    <h3>Budget</h3>
+                </a>
+                <a href="splitwise.html" id="link-splitwise">
+                    <span class="material-icons-sharp">call_split</span>
+                    <h3>Splitwise</h3>
+                </a>
+                <a href="categories.html" id="link-categories">
+                    <span class="material-icons-sharp">category</span>
+                    <h3>Categories</h3>
+                </a>
+                <a href="analytics.html" id="link-analytics">
+                    <span class="material-icons-sharp">insights</span>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="reports.html" id="link-reports">
+                    <span class="material-icons-sharp">description</span>
+                    <h3>Reports</h3>
+                </a>
+                <a href="settings.html" id="link-settings">
+                    <span class="material-icons-sharp">settings</span>
+                    <h3>Settings</h3>
+                </a>
+
+                <a href="#" onclick="logout()">
+                    <span class="material-icons-sharp">logout</span>
+                    <h3>Logout</h3>
+                </a>
+            </div>
+        </aside>
+        <main>
+            <h1>Budget Planner</h1>
+
+            <form id="budget-form" class="budget-form">
+                <div class="input-group">
+                    <label>Category</label>
+                    <select id="b-category">
+                        <option value="Food">Food</option>
+                        <option value="Rent">Rent</option>
+                        <option value="Bills">Bills</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Shopping">Shopping</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Monthly Limit ($)</label>
+                    <input type="number" id="b-amount" placeholder="500" required>
+                </div>
+                <button type="submit" class="btn-primary">Set Budget</button>
+            </form>
+
+            <div id="budget-cards" class="budget-container">
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const TX_KEY = 'finance_tracker_data';
+        const BUDGET_KEY = 'finance_tracker_budget';
+
+        let transactions = JSON.parse(localStorage.getItem(TX_KEY)) || [];
+        let budgets = JSON.parse(localStorage.getItem(BUDGET_KEY)) || {}; // Object: { "Food": 500, "Rent": 1000 }
+
+        // 1. Calculate Spent per Category
+        function getSpent(category) {
+            return transactions
+                .filter(t => t.type === 'expense' && t.category === category)
+                .reduce((sum, t) => sum + t.amount, 0);
+        }
+
+        // 2. Render Cards
+        function renderBudgets() {
+            const container = document.getElementById('budget-cards');
+            container.innerHTML = '';
+
+            if (Object.keys(budgets).length === 0) {
+                container.innerHTML = '<p class="text-muted">No budgets set yet.</p>';
+                return;
+            }
+
+            for (const [category, limit] of Object.entries(budgets)) {
+                const spent = getSpent(category);
+                const percentage = Math.min((spent / limit) * 100, 100);
+                const isOver = spent > limit;
+
+                // Color Logic
+                let color = 'var(--color-primary)';
+                if (percentage > 50) color = 'var(--color-warning)';
+                if (percentage > 90 || isOver) color = 'var(--color-danger)';
+
+                const html = `
+                    <div class="budget-card">
+                        <div class="budget-header">
+                            <h3>${category}</h3>
+                            <button onclick="deleteBudget('${category}')" style="background:none; color:var(--color-info-dark); cursor:pointer;">
+                                <span class="material-icons-sharp">delete</span>
+                            </button>
+                        </div>
+                        <div class="budget-amount">
+                            <span>$${spent.toFixed(0)}</span> / <span>$${limit}</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: ${percentage}%; background: ${color};"></div>
+                        </div>
+                        <div class="status-text">
+                            <span class="${isOver ? 'over-budget' : 'under-budget'}">
+                                ${isOver ? 'Over Budget!' : 'On Track'}
+                            </span>
+                            <span>${Math.round(percentage)}%</span>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            }
+        }
+
+        // 3. Add Budget
+        document.getElementById('budget-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const category = document.getElementById('b-category').value;
+            const amount = parseFloat(document.getElementById('b-amount').value);
+
+            budgets[category] = amount;
+            localStorage.setItem(BUDGET_KEY, JSON.stringify(budgets));
+
+            alert(`Budget set for ${category}`);
+            renderBudgets();
+            e.target.reset();
+        });
+
+        // 4. Delete Budget
+        function deleteBudget(category) {
+            if (confirm(`Remove budget for ${category}?`)) {
+                delete budgets[category];
+                localStorage.setItem(BUDGET_KEY, JSON.stringify(budgets));
+                renderBudgets();
+            }
+        }
+
+        // Init
+        renderBudgets();
+        function logout() {
+            if (confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+
+</html>

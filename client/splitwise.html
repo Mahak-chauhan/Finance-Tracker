@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splitwise | FinanceTracker</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --color-primary: #7380ec;
+            --color-danger: #ff7782;
+            --color-success: #41f1b6;
+            --color-white: #202528;
+            --color-info-dark: #7d8da1;
+            --color-background: #181a1e;
+            --card-border-radius: 2rem;
+            --card-padding: 1.8rem;
+            --box-shadow: 0 2rem 3rem rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            appearance: none;
+            border: 0;
+            text-decoration: none;
+            list-style: none;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            font-family: poppins, sans-serif;
+            background: var(--color-background);
+            color: #edeffd;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: grid;
+            width: 96%;
+            margin: 0 auto;
+            gap: 1.8rem;
+            grid-template-columns: 14rem auto;
+        }
+
+        aside {
+            height: 100vh;
+        }
+
+        aside .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1.4rem;
+        }
+
+        aside .sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 86vh;
+            position: relative;
+            top: 3rem;
+        }
+
+        aside .sidebar a {
+            display: flex;
+            color: var(--color-info-dark);
+            margin-left: 2rem;
+            gap: 1rem;
+            align-items: center;
+            height: 3.7rem;
+            transition: 300ms;
+        }
+
+        aside .sidebar a:hover {
+            color: var(--color-primary);
+            margin-left: 1rem;
+        }
+
+        aside .sidebar a.active {
+            background: rgba(0, 0, 0, 0.4);
+            color: var(--color-primary);
+            margin-left: 0;
+        }
+
+        aside .sidebar a.active:before {
+            content: '';
+            width: 6px;
+            height: 100%;
+            background: var(--color-primary);
+        }
+
+        aside .sidebar a.active span {
+            margin-left: calc(1rem - 3px);
+        }
+
+        main {
+            margin-top: 1.4rem;
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .split-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--color-white);
+            padding: var(--card-padding);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        /* FRIENDS LIST */
+        .friend-input {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .friend-input input {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+            background: #181a1e;
+            border: 1px solid #7d8da1;
+            color: white;
+        }
+
+        .btn-add {
+            padding: 0.8rem;
+            background: var(--color-primary);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        .friend-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .owe-text {
+            font-weight: bold;
+        }
+
+        .owes-you {
+            color: var(--color-success);
+        }
+
+        .you-owe {
+            color: var(--color-danger);
+        }
+
+        /* ADD BILL */
+        .bill-form {
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .bill-form input,
+        .bill-form select {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+            background: #181a1e;
+            border: 1px solid #7d8da1;
+            color: white;
+        }
+
+        .bill-form button {
+            background: var(--color-success);
+            color: #181a1e;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            text-align: left;
+            margin-top: 1rem;
+        }
+
+        table th {
+            padding-bottom: 1rem;
+            color: var(--color-info-dark);
+        }
+
+        table td {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <span class="material-icons-sharp text-danger">account_balance_wallet</span>
+                    <h2>Fi<span class="text-danger">nance</span></h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">close</span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="dashboard.html" id="link-dashboard">
+                    <span class="material-icons-sharp">grid_view</span>
+                    <h3>Dashboard</h3>
+                </a>
+
+                <a href="profile.html" id="link-profile">
+                    <span class="material-icons-sharp">person</span>
+                    <h3>Profile</h3>
+                </a>
+
+                <a href="expenses.html" id="link-expenses">
+                    <span class="material-icons-sharp">money_off</span>
+                    <h3>Expenses</h3>
+                </a>
+                <a href="income.html" id="link-income">
+                    <span class="material-icons-sharp">attach_money</span>
+                    <h3>Income</h3>
+                </a>
+                <a href="transactions.html" id="link-transactions">
+                    <span class="material-icons-sharp">receipt_long</span>
+                    <h3>Transactions</h3>
+                </a>
+                <a href="budget.html" id="link-budget">
+                    <span class="material-icons-sharp">pie_chart</span>
+                    <h3>Budget</h3>
+                </a>
+                <a href="splitwise.html" id="link-splitwise">
+                    <span class="material-icons-sharp">call_split</span>
+                    <h3>Splitwise</h3>
+                </a>
+                <a href="categories.html" id="link-categories">
+                    <span class="material-icons-sharp">category</span>
+                    <h3>Categories</h3>
+                </a>
+                <a href="analytics.html" id="link-analytics">
+                    <span class="material-icons-sharp">insights</span>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="reports.html" id="link-reports">
+                    <span class="material-icons-sharp">description</span>
+                    <h3>Reports</h3>
+                </a>
+                <a href="settings.html" id="link-settings">
+                    <span class="material-icons-sharp">settings</span>
+                    <h3>Settings</h3>
+                </a>
+
+                <a href="#" onclick="logout()">
+                    <span class="material-icons-sharp">logout</span>
+                    <h3>Logout</h3>
+                </a>
+            </div>
+        </aside>
+        <main>
+            <h1>Splitwise (Group Bills)</h1>
+
+            <div class="split-grid">
+                <div class="card">
+                    <h2>Friends</h2>
+                    <br>
+                    <form class="friend-input" onsubmit="addFriend(event)">
+                        <input type="text" id="friend-name" placeholder="Friend Name" required>
+                        <button type="submit" class="btn-add">+</button>
+                    </form>
+                    <ul class="friend-list" id="friend-list">
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h2>Add Group Bill</h2>
+                    <br>
+                    <div class="bill-form">
+                        <div>
+                            <label>Description</label>
+                            <input type="text" id="bill-desc" placeholder="Dinner, Taxi...">
+                        </div>
+                        <div>
+                            <label>Amount ($)</label>
+                            <input type="number" id="bill-amount" placeholder="0.00">
+                        </div>
+                        <div>
+                            <label>Paid By</label>
+                            <select id="bill-payer">
+                                <option value="You">You</option>
+                            </select>
+                        </div>
+                        <button onclick="addBill()" style="grid-column: span 3;">Split Equally</button>
+                    </div>
+
+                    <h3>Recent Splits</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Total</th>
+                                <th>Paid By</th>
+                                <th>My Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="split-table"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // AUTH GUARD
+        if (!localStorage.getItem('currentUser')) window.location.href = 'login.html';
+
+        // DATA
+        let friends = JSON.parse(localStorage.getItem('split_friends')) || [];
+        let splits = JSON.parse(localStorage.getItem('split_bills')) || [];
+
+        function addFriend(e) {
+            e.preventDefault();
+            const name = document.getElementById('friend-name').value;
+            if (name) {
+                friends.push({ name: name, balance: 0 });
+                localStorage.setItem('split_friends', JSON.stringify(friends));
+                document.getElementById('friend-name').value = '';
+                render();
+            }
+        }
+
+        function addBill() {
+            const desc = document.getElementById('bill-desc').value;
+            const amount = parseFloat(document.getElementById('bill-amount').value);
+            const payer = document.getElementById('bill-payer').value;
+
+            if (!desc || !amount) return alert("Fill all fields");
+
+            // Logic: Split equally among (You + Friends count)
+            const totalPeople = friends.length + 1;
+            const splitAmount = amount / totalPeople;
+
+            // Update Balances
+            if (payer === 'You') {
+                // You paid, everyone owes you splitAmount
+                friends.forEach(f => f.balance -= splitAmount); // Negative means they owe you
+            } else {
+                // Friend paid
+                friends.forEach(f => {
+                    if (f.name === payer) {
+                        // The payer gets owed by everyone else
+                        // But strictly for "My Balance" perspective:
+                        // I owe the payer splitAmount
+                        f.balance += splitAmount; // Positive means I owe them
+                    }
+                });
+            }
+
+            splits.unshift({ desc, amount, payer, date: new Date().toLocaleDateString() });
+            localStorage.setItem('split_bills', JSON.stringify(splits));
+            localStorage.setItem('split_friends', JSON.stringify(friends));
+            render();
+        }
+
+        function render() {
+            // Render Friends List
+            const fList = document.getElementById('friend-list');
+            const payerSelect = document.getElementById('bill-payer');
+
+            fList.innerHTML = '';
+            // Reset Select but keep "You"
+            payerSelect.innerHTML = '<option value="You">You</option>';
+
+            friends.forEach(f => {
+                // Update Dropdown
+                payerSelect.innerHTML += `<option value="${f.name}">${f.name}</option>`;
+
+                // Update List
+                let balText = '';
+                let balClass = '';
+
+                if (f.balance > 0) {
+                    balText = `You owe $${f.balance.toFixed(2)}`;
+                    balClass = 'you-owe';
+                } else if (f.balance < 0) {
+                    balText = `Owes you $${Math.abs(f.balance).toFixed(2)}`;
+                    balClass = 'owes-you';
+                } else {
+                    balText = 'Settled';
+                }
+
+                fList.innerHTML += `
+                    <li>
+                        <span>${f.name}</span>
+                        <span class="owe-text ${balClass}">${balText}</span>
+                    </li>
+                `;
+            });
+
+            // Render Table
+            const tbody = document.getElementById('split-table');
+            tbody.innerHTML = '';
+            splits.forEach(s => {
+                const totalPeople = friends.length + 1;
+                const splitAmt = (s.amount / totalPeople).toFixed(2);
+                let status = '';
+
+                if (s.payer === 'You') {
+                    status = `<span class="owes-you">You lent $${(s.amount - splitAmt).toFixed(2)}</span>`;
+                } else {
+                    status = `<span class="you-owe">You owe $${splitAmt}</span>`;
+                }
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${s.desc}</td>
+                        <td>$${s.amount}</td>
+                        <td>${s.payer}</td>
+                        <td>${status}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        render();
+        function logout() {
+            if (confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+
+</html>

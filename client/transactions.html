@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions | FinanceTracker</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --color-primary: #7380ec;
+            --color-danger: #ff7782;
+            --color-success: #41f1b6;
+            --color-warning: #ffbb55;
+            --color-white: #202528;
+            --color-info-dark: #7d8da1;
+            --color-dark: #edeffd;
+            --color-light: rgba(0, 0, 0, 0.4);
+            --color-background: #181a1e;
+            --card-border-radius: 2rem;
+            --card-padding: 1.8rem;
+            --box-shadow: 0 2rem 3rem var(--color-light);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            appearance: none;
+            border: 0;
+            text-decoration: none;
+            list-style: none;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            font-family: poppins, sans-serif;
+            font-size: 0.88rem;
+            background: var(--color-background);
+            user-select: none;
+            overflow-x: hidden;
+            color: var(--color-dark);
+        }
+
+        .container {
+            display: grid;
+            width: 96%;
+            margin: 0 auto;
+            gap: 1.8rem;
+            grid-template-columns: 14rem auto;
+        }
+
+        /* SIDEBAR */
+        aside {
+            height: 100vh;
+        }
+
+        aside .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1.4rem;
+        }
+
+        aside .sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 86vh;
+            position: relative;
+            top: 3rem;
+        }
+
+        aside .sidebar a {
+            display: flex;
+            color: var(--color-info-dark);
+            margin-left: 2rem;
+            gap: 1rem;
+            align-items: center;
+            height: 3.7rem;
+            transition: all 300ms ease;
+        }
+
+        aside .sidebar a span {
+            font-size: 1.6rem;
+        }
+
+        aside .sidebar a:hover {
+            color: var(--color-primary);
+            margin-left: 1rem;
+        }
+
+        aside .sidebar a.active {
+            background: var(--color-light);
+            color: var(--color-primary);
+            margin-left: 0;
+        }
+
+        aside .sidebar a.active:before {
+            content: '';
+            width: 6px;
+            height: 100%;
+            background: var(--color-primary);
+        }
+
+        aside .sidebar a.active span {
+            margin-left: calc(1rem - 3px);
+        }
+
+        /* MAIN CONTENT */
+        main {
+            margin-top: 1.4rem;
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        /* FILTERS */
+        .filter-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            background: var(--color-white);
+            padding: 1rem;
+            border-radius: 1rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .filter-container input,
+        .filter-container select {
+            padding: 0.8rem;
+            background: var(--color-background);
+            color: var(--color-dark);
+            border-radius: 0.5rem;
+            border: 1px solid var(--color-info-dark);
+        }
+
+        .filter-container input {
+            flex: 1;
+        }
+
+        /* TABLE */
+        table {
+            background: var(--color-white);
+            width: 100%;
+            border-radius: var(--card-border-radius);
+            padding: var(--card-padding);
+            text-align: center;
+            box-shadow: var(--box-shadow);
+        }
+
+        table tbody td {
+            height: 2.8rem;
+            border-bottom: 1px solid var(--color-light);
+            color: var(--color-dark);
+        }
+
+        .text-success {
+            color: var(--color-success);
+        }
+
+        .text-danger {
+            color: var(--color-danger);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <span class="material-icons-sharp text-danger">account_balance_wallet</span>
+                    <h2>Fi<span class="text-danger">nance</span></h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">close</span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="dashboard.html" id="link-dashboard">
+                    <span class="material-icons-sharp">grid_view</span>
+                    <h3>Dashboard</h3>
+                </a>
+
+                <a href="profile.html" id="link-profile">
+                    <span class="material-icons-sharp">person</span>
+                    <h3>Profile</h3>
+                </a>
+
+                <a href="expenses.html" id="link-expenses">
+                    <span class="material-icons-sharp">money_off</span>
+                    <h3>Expenses</h3>
+                </a>
+                <a href="income.html" id="link-income">
+                    <span class="material-icons-sharp">attach_money</span>
+                    <h3>Income</h3>
+                </a>
+                <a href="transactions.html" id="link-transactions">
+                    <span class="material-icons-sharp">receipt_long</span>
+                    <h3>Transactions</h3>
+                </a>
+                <a href="budget.html" id="link-budget">
+                    <span class="material-icons-sharp">pie_chart</span>
+                    <h3>Budget</h3>
+                </a>
+                <a href="splitwise.html" id="link-splitwise">
+                    <span class="material-icons-sharp">call_split</span>
+                    <h3>Splitwise</h3>
+                </a>
+                <a href="categories.html" id="link-categories">
+                    <span class="material-icons-sharp">category</span>
+                    <h3>Categories</h3>
+                </a>
+                <a href="analytics.html" id="link-analytics">
+                    <span class="material-icons-sharp">insights</span>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="reports.html" id="link-reports">
+                    <span class="material-icons-sharp">description</span>
+                    <h3>Reports</h3>
+                </a>
+                <a href="settings.html" id="link-settings">
+                    <span class="material-icons-sharp">settings</span>
+                    <h3>Settings</h3>
+                </a>
+
+                <a href="#" onclick="logout()">
+                    <span class="material-icons-sharp">logout</span>
+                    <h3>Logout</h3>
+                </a>
+            </div>
+        </aside>
+        <main>
+            <h1>Transaction History</h1>
+
+            <div class="filter-container">
+                <input type="text" id="search" placeholder="Search by title..." onkeyup="filterData()">
+                <select id="type-filter" onchange="filterData()">
+                    <option value="all">All Types</option>
+                    <option value="income">Income Only</option>
+                    <option value="expense">Expense Only</option>
+                </select>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tx-list"></tbody>
+            </table>
+        </main>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'finance_tracker_data';
+        let transactions = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tx-list');
+            tbody.innerHTML = '';
+
+            // Sort by Date (Newest First)
+            data.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            data.forEach(t => {
+                const tr = document.createElement('tr');
+                const color = t.type === 'income' ? 'text-success' : 'text-danger';
+                const sign = t.type === 'income' ? '+' : '-';
+
+                tr.innerHTML = `
+                    <td>${t.title}</td>
+                    <td>${t.category}</td>
+                    <td>${t.type.toUpperCase()}</td>
+                    <td>${t.date}</td>
+                    <td class="${color}">${sign}$${t.amount.toFixed(2)}</td>
+                    <td><button onclick="deleteItem(${t.id})" style="color:var(--color-danger); background:none; cursor:pointer;">X</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterData() {
+            const search = document.getElementById('search').value.toLowerCase();
+            const type = document.getElementById('type-filter').value;
+
+            const filtered = transactions.filter(t => {
+                const matchesSearch = t.title.toLowerCase().includes(search) || t.category.toLowerCase().includes(search);
+                const matchesType = type === 'all' ? true : t.type === type;
+                return matchesSearch && matchesType;
+            });
+
+            renderTable(filtered);
+        }
+
+        function deleteItem(id) {
+            if (confirm('Permanently delete this transaction?')) {
+                transactions = transactions.filter(t => t.id !== id);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+                filterData(); // Re-render
+            }
+        }
+
+        // Init
+        renderTable(transactions);
+        function logout() {
+            if (confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+
+</html>

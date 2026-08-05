@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | FinanceTracker</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --color-primary: #7380ec;
+            --color-danger: #ff7782;
+            --color-success: #41f1b6;
+            --color-white: #202528;
+            --color-info-dark: #7d8da1;
+            --color-background: #181a1e;
+            --card-border-radius: 2rem;
+            --card-padding: 1.8rem;
+            --box-shadow: 0 2rem 3rem rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            appearance: none;
+            border: 0;
+            text-decoration: none;
+            list-style: none;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            font-family: poppins, sans-serif;
+            background: var(--color-background);
+            color: #edeffd;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: grid;
+            width: 96%;
+            margin: 0 auto;
+            gap: 1.8rem;
+            grid-template-columns: 14rem auto;
+        }
+
+        aside {
+            height: 100vh;
+        }
+
+        aside .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1.4rem;
+        }
+
+        aside .sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 86vh;
+            position: relative;
+            top: 3rem;
+        }
+
+        aside .sidebar a {
+            display: flex;
+            color: var(--color-info-dark);
+            margin-left: 2rem;
+            gap: 1rem;
+            align-items: center;
+            height: 3.7rem;
+            transition: 300ms;
+        }
+
+        aside .sidebar a:hover {
+            color: var(--color-primary);
+            margin-left: 1rem;
+        }
+
+        aside .sidebar a.active {
+            background: rgba(0, 0, 0, 0.4);
+            color: var(--color-primary);
+            margin-left: 0;
+        }
+
+        aside .sidebar a.active:before {
+            content: '';
+            width: 6px;
+            height: 100%;
+            background: var(--color-primary);
+        }
+
+        aside .sidebar a.active span {
+            margin-left: calc(1rem - 3px);
+        }
+
+        main {
+            margin-top: 1.4rem;
+        }
+
+        .profile-card {
+            background: var(--color-white);
+            padding: 3rem;
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--box-shadow);
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            background: var(--color-primary);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--color-info-dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            background: #181a1e;
+            color: white;
+            border-radius: 0.5rem;
+            border: 1px solid #7d8da1;
+        }
+
+        .btn-save {
+            background: var(--color-success);
+            color: #181a1e;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .btn-logout {
+            background: var(--color-danger);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <span class="material-icons-sharp text-danger">account_balance_wallet</span>
+                    <h2>Fi<span class="text-danger">nance</span></h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">close</span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="dashboard.html" id="link-dashboard">
+                    <span class="material-icons-sharp">grid_view</span>
+                    <h3>Dashboard</h3>
+                </a>
+
+                <a href="profile.html" id="link-profile">
+                    <span class="material-icons-sharp">person</span>
+                    <h3>Profile</h3>
+                </a>
+
+                <a href="expenses.html" id="link-expenses">
+                    <span class="material-icons-sharp">money_off</span>
+                    <h3>Expenses</h3>
+                </a>
+                <a href="income.html" id="link-income">
+                    <span class="material-icons-sharp">attach_money</span>
+                    <h3>Income</h3>
+                </a>
+                <a href="transactions.html" id="link-transactions">
+                    <span class="material-icons-sharp">receipt_long</span>
+                    <h3>Transactions</h3>
+                </a>
+                <a href="budget.html" id="link-budget">
+                    <span class="material-icons-sharp">pie_chart</span>
+                    <h3>Budget</h3>
+                </a>
+                <a href="splitwise.html" id="link-splitwise">
+                    <span class="material-icons-sharp">call_split</span>
+                    <h3>Splitwise</h3>
+                </a>
+                <a href="categories.html" id="link-categories">
+                    <span class="material-icons-sharp">category</span>
+                    <h3>Categories</h3>
+                </a>
+                <a href="analytics.html" id="link-analytics">
+                    <span class="material-icons-sharp">insights</span>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="reports.html" id="link-reports">
+                    <span class="material-icons-sharp">description</span>
+                    <h3>Reports</h3>
+                </a>
+                <a href="settings.html" id="link-settings">
+                    <span class="material-icons-sharp">settings</span>
+                    <h3>Settings</h3>
+                </a>
+
+                <a href="#" onclick="logout()">
+                    <span class="material-icons-sharp">logout</span>
+                    <h3>Logout</h3>
+                </a>
+            </div>
+        </aside>
+        <main>
+            <h1>My Profile</h1>
+            <div class="profile-card">
+                <div class="avatar" id="avatar-initial">U</div>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="p-name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="p-email" readonly style="opacity:0.5; cursor:not-allowed;">
+                    </div>
+                    <div class="form-group">
+                        <label>Member Since</label>
+                        <input type="text" id="p-joined" readonly style="opacity:0.5;">
+                    </div>
+                    <button type="submit" class="btn-save">Save Changes</button>
+                    <button type="button" class="btn-logout" onclick="logout()">Logout</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // AUTH GUARD
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) window.location.href = 'login.html';
+
+        // Load Data
+        document.getElementById('p-name').value = currentUser.name;
+        document.getElementById('p-email').value = currentUser.email;
+        document.getElementById('p-joined').value = currentUser.joined || 'Unknown';
+        document.getElementById('avatar-initial').innerText = currentUser.name.charAt(0).toUpperCase();
+
+        // Update Profile
+        document.getElementById('profile-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            currentUser.name = document.getElementById('p-name').value;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+            // Also update the main users list
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            let index = users.findIndex(u => u.email === currentUser.email);
+            if (index !== -1) {
+                users[index].name = currentUser.name;
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            alert('Profile Updated!');
+            window.location.reload();
+        });
+
+        function logout() {
+            if (confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+
+</html>

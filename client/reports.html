@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports | FinanceTracker</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --color-primary: #7380ec;
+            --color-danger: #ff7782;
+            --color-success: #41f1b6;
+            --color-warning: #ffbb55;
+            --color-white: #202528;
+            --color-info-dark: #7d8da1;
+            --color-dark: #edeffd;
+            --color-light: rgba(0, 0, 0, 0.4);
+            --color-background: #181a1e;
+            --card-border-radius: 2rem;
+            --card-padding: 1.8rem;
+            --box-shadow: 0 2rem 3rem var(--color-light);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            appearance: none;
+            border: 0;
+            text-decoration: none;
+            list-style: none;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            font-family: poppins, sans-serif;
+            font-size: 0.88rem;
+            background: var(--color-background);
+            user-select: none;
+            overflow-x: hidden;
+            color: var(--color-dark);
+        }
+
+        .container {
+            display: grid;
+            width: 96%;
+            margin: 0 auto;
+            gap: 1.8rem;
+            grid-template-columns: 14rem auto;
+        }
+
+        /* SIDEBAR */
+        aside {
+            height: 100vh;
+        }
+
+        aside .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1.4rem;
+        }
+
+        aside .sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 86vh;
+            position: relative;
+            top: 3rem;
+        }
+
+        aside .sidebar a {
+            display: flex;
+            color: var(--color-info-dark);
+            margin-left: 2rem;
+            gap: 1rem;
+            align-items: center;
+            height: 3.7rem;
+            transition: all 300ms ease;
+        }
+
+        aside .sidebar a span {
+            font-size: 1.6rem;
+        }
+
+        aside .sidebar a:hover {
+            color: var(--color-primary);
+            margin-left: 1rem;
+        }
+
+        aside .sidebar a.active {
+            background: var(--color-light);
+            color: var(--color-primary);
+            margin-left: 0;
+        }
+
+        aside .sidebar a.active:before {
+            content: '';
+            width: 6px;
+            height: 100%;
+            background: var(--color-primary);
+        }
+
+        aside .sidebar a.active span {
+            margin-left: calc(1rem - 3px);
+        }
+
+        /* MAIN CONTENT */
+        main {
+            margin-top: 1.4rem;
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        /* REPORT CONTROLS */
+        .report-controls {
+            background: var(--color-white);
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .report-controls input {
+            padding: 0.5rem;
+            border-radius: 0.4rem;
+            background: var(--color-background);
+            color: var(--color-dark);
+        }
+
+        .btn-print {
+            background: var(--color-primary);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.4rem;
+            cursor: pointer;
+        }
+
+        /* REPORT CARD (THE PAPER) */
+        .report-paper {
+            background: white;
+            color: black;
+            padding: 2.5rem;
+            border-radius: 0.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            min-height: 600px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .report-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #333;
+            padding-bottom: 1rem;
+        }
+
+        .report-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-box {
+            background: #f4f4f4;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .summary-box h3 {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .summary-box h2 {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .report-table th,
+        .report-table td {
+            padding: 0.8rem;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .report-table th {
+            background: #f8f8f8;
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            .report-paper,
+            .report-paper * {
+                visibility: visible;
+            }
+
+            .report-paper {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+            }
+
+            aside,
+            .report-controls {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <span class="material-icons-sharp text-danger">account_balance_wallet</span>
+                    <h2>Fi<span class="text-danger">nance</span></h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">close</span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="dashboard.html" id="link-dashboard">
+                    <span class="material-icons-sharp">grid_view</span>
+                    <h3>Dashboard</h3>
+                </a>
+
+                <a href="profile.html" id="link-profile">
+                    <span class="material-icons-sharp">person</span>
+                    <h3>Profile</h3>
+                </a>
+
+                <a href="expenses.html" id="link-expenses">
+                    <span class="material-icons-sharp">money_off</span>
+                    <h3>Expenses</h3>
+                </a>
+                <a href="income.html" id="link-income">
+                    <span class="material-icons-sharp">attach_money</span>
+                    <h3>Income</h3>
+                </a>
+                <a href="transactions.html" id="link-transactions">
+                    <span class="material-icons-sharp">receipt_long</span>
+                    <h3>Transactions</h3>
+                </a>
+                <a href="budget.html" id="link-budget">
+                    <span class="material-icons-sharp">pie_chart</span>
+                    <h3>Budget</h3>
+                </a>
+                <a href="splitwise.html" id="link-splitwise">
+                    <span class="material-icons-sharp">call_split</span>
+                    <h3>Splitwise</h3>
+                </a>
+                <a href="categories.html" id="link-categories">
+                    <span class="material-icons-sharp">category</span>
+                    <h3>Categories</h3>
+                </a>
+                <a href="analytics.html" id="link-analytics">
+                    <span class="material-icons-sharp">insights</span>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="reports.html" id="link-reports">
+                    <span class="material-icons-sharp">description</span>
+                    <h3>Reports</h3>
+                </a>
+                <a href="settings.html" id="link-settings">
+                    <span class="material-icons-sharp">settings</span>
+                    <h3>Settings</h3>
+                </a>
+
+                <a href="#" onclick="logout()">
+                    <span class="material-icons-sharp">logout</span>
+                    <h3>Logout</h3>
+                </a>
+            </div>
+        </aside>
+        <main>
+            <h1>Generate Report</h1>
+
+            <div class="report-controls">
+                <label>Select Month:</label>
+                <input type="month" id="report-month" onchange="generateReport()">
+                <button class="btn-print" onclick="window.print()">Print PDF</button>
+            </div>
+
+            <div class="report-paper">
+                <div class="report-header">
+                    <h1>Monthly Financial Statement</h1>
+                    <p id="report-date-label">Date: --</p>
+                </div>
+
+                <div class="report-summary">
+                    <div class="summary-box">
+                        <h3>Total Income</h3>
+                        <h2 id="rep-inc" style="color: green;">$0.00</h2>
+                    </div>
+                    <div class="summary-box">
+                        <h3>Total Expenses</h3>
+                        <h2 id="rep-exp" style="color: red;">$0.00</h2>
+                    </div>
+                    <div class="summary-box">
+                        <h3>Net Savings</h3>
+                        <h2 id="rep-bal">$0.00</h2>
+                    </div>
+                </div>
+
+                <h3>Breakdown by Category</h3>
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Type</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="report-body">
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'finance_tracker_data';
+        const transactions = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+        // Set default to current month
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        document.getElementById('report-month').value = `${yyyy}-${mm}`;
+
+        function generateReport() {
+            const selectedMonth = document.getElementById('report-month').value; // "2023-10"
+            document.getElementById('report-date-label').innerText = `Period: ${selectedMonth}`;
+
+            // Filter data
+            const filtered = transactions.filter(t => t.date.startsWith(selectedMonth));
+
+            // Calc Totals
+            let inc = 0, exp = 0;
+            const catBreakdown = {};
+
+            filtered.forEach(t => {
+                if (t.type === 'income') inc += t.amount;
+                if (t.type === 'expense') exp += t.amount;
+
+                // Group by category
+                if (!catBreakdown[t.category]) catBreakdown[t.category] = { amount: 0, type: t.type };
+                catBreakdown[t.category].amount += t.amount;
+            });
+
+            // Update UI
+            document.getElementById('rep-inc').innerText = `$${inc.toFixed(2)}`;
+            document.getElementById('rep-exp').innerText = `$${exp.toFixed(2)}`;
+            document.getElementById('rep-bal').innerText = `$${(inc - exp).toFixed(2)}`;
+
+            // Render Table
+            const tbody = document.getElementById('report-body');
+            tbody.innerHTML = '';
+
+            for (const [cat, data] of Object.entries(catBreakdown)) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${cat}</td>
+                    <td>${data.type.toUpperCase()}</td>
+                    <td>$${data.amount.toFixed(2)}</td>
+                `;
+                tbody.appendChild(tr);
+            }
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No transactions found for this month.</td></tr>';
+            }
+        }
+
+        // Init
+        generateReport();
+        function logout() {
+            if (confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+
+</html>
