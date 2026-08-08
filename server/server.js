@@ -5,6 +5,7 @@ const expenseRoutes = require("./routes/expenseRoutes");
 const incomeRoutes = require("./routes/incomeRoutes");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const transactionRoutes = require("./routes/transactionRoutes");
 dotenv.config();
 console.log("MONGO_URI =", process.env.MONGO_URI);
 
@@ -17,7 +18,7 @@ const app = express();
     app.use("/api/auth", authRoutes);
     app.use("/api/expenses", expenseRoutes);
     app.use("/api/income", incomeRoutes);
-
+app.use("/api/transactions", transactionRoutes);
 
 app.get("/", (req, res) => {
     res.json({

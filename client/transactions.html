@@ -266,64 +266,7 @@
         </main>
     </div>
 
-    <script>
-        const STORAGE_KEY = 'finance_tracker_data';
-        let transactions = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-        function renderTable(data) {
-            const tbody = document.getElementById('tx-list');
-            tbody.innerHTML = '';
-
-            // Sort by Date (Newest First)
-            data.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-            data.forEach(t => {
-                const tr = document.createElement('tr');
-                const color = t.type === 'income' ? 'text-success' : 'text-danger';
-                const sign = t.type === 'income' ? '+' : '-';
-
-                tr.innerHTML = `
-                    <td>${t.title}</td>
-                    <td>${t.category}</td>
-                    <td>${t.type.toUpperCase()}</td>
-                    <td>${t.date}</td>
-                    <td class="${color}">${sign}$${t.amount.toFixed(2)}</td>
-                    <td><button onclick="deleteItem(${t.id})" style="color:var(--color-danger); background:none; cursor:pointer;">X</button></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function filterData() {
-            const search = document.getElementById('search').value.toLowerCase();
-            const type = document.getElementById('type-filter').value;
-
-            const filtered = transactions.filter(t => {
-                const matchesSearch = t.title.toLowerCase().includes(search) || t.category.toLowerCase().includes(search);
-                const matchesType = type === 'all' ? true : t.type === type;
-                return matchesSearch && matchesType;
-            });
-
-            renderTable(filtered);
-        }
-
-        function deleteItem(id) {
-            if (confirm('Permanently delete this transaction?')) {
-                transactions = transactions.filter(t => t.id !== id);
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
-                filterData(); // Re-render
-            }
-        }
-
-        // Init
-        renderTable(transactions);
-        function logout() {
-            if (confirm("Are you sure you want to logout?")) {
-                localStorage.removeItem('currentUser');
-                window.location.href = 'login.html';
-            }
-        }
-    </script>
+    <script src="transactions.js"></script>
 </body>
 
 </html>
