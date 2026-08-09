@@ -303,7 +303,7 @@
                             <input type="text" id="bill-desc" placeholder="Dinner, Taxi...">
                         </div>
                         <div>
-                            <label>Amount ($)</label>
+                            <label>Amount (₹)</label>
                             <input type="number" id="bill-amount" placeholder="0.00">
                         </div>
                         <div>
@@ -318,13 +318,14 @@
                     <h3>Recent Splits</h3>
                     <table>
                         <thead>
-                            <tr>
-                                <th>Description</th>
-                                <th>Total</th>
-                                <th>Paid By</th>
-                                <th>My Status</th>
-                            </tr>
-                        </thead>
+    <tr>
+        <th>Description</th>
+        <th>Total</th>
+        <th>Paid By</th>
+        <th>My Status</th>
+        <th>Action</th>
+    </tr>
+</thead>
                         <tbody id="split-table"></tbody>
                     </table>
                 </div>
@@ -332,126 +333,7 @@
         </main>
     </div>
 
-    <script>
-        // AUTH GUARD
-        if (!localStorage.getItem('currentUser')) window.location.href = 'login.html';
-
-        // DATA
-        let friends = JSON.parse(localStorage.getItem('split_friends')) || [];
-        let splits = JSON.parse(localStorage.getItem('split_bills')) || [];
-
-        function addFriend(e) {
-            e.preventDefault();
-            const name = document.getElementById('friend-name').value;
-            if (name) {
-                friends.push({ name: name, balance: 0 });
-                localStorage.setItem('split_friends', JSON.stringify(friends));
-                document.getElementById('friend-name').value = '';
-                render();
-            }
-        }
-
-        function addBill() {
-            const desc = document.getElementById('bill-desc').value;
-            const amount = parseFloat(document.getElementById('bill-amount').value);
-            const payer = document.getElementById('bill-payer').value;
-
-            if (!desc || !amount) return alert("Fill all fields");
-
-            // Logic: Split equally among (You + Friends count)
-            const totalPeople = friends.length + 1;
-            const splitAmount = amount / totalPeople;
-
-            // Update Balances
-            if (payer === 'You') {
-                // You paid, everyone owes you splitAmount
-                friends.forEach(f => f.balance -= splitAmount); // Negative means they owe you
-            } else {
-                // Friend paid
-                friends.forEach(f => {
-                    if (f.name === payer) {
-                        // The payer gets owed by everyone else
-                        // But strictly for "My Balance" perspective:
-                        // I owe the payer splitAmount
-                        f.balance += splitAmount; // Positive means I owe them
-                    }
-                });
-            }
-
-            splits.unshift({ desc, amount, payer, date: new Date().toLocaleDateString() });
-            localStorage.setItem('split_bills', JSON.stringify(splits));
-            localStorage.setItem('split_friends', JSON.stringify(friends));
-            render();
-        }
-
-        function render() {
-            // Render Friends List
-            const fList = document.getElementById('friend-list');
-            const payerSelect = document.getElementById('bill-payer');
-
-            fList.innerHTML = '';
-            // Reset Select but keep "You"
-            payerSelect.innerHTML = '<option value="You">You</option>';
-
-            friends.forEach(f => {
-                // Update Dropdown
-                payerSelect.innerHTML += `<option value="${f.name}">${f.name}</option>`;
-
-                // Update List
-                let balText = '';
-                let balClass = '';
-
-                if (f.balance > 0) {
-                    balText = `You owe $${f.balance.toFixed(2)}`;
-                    balClass = 'you-owe';
-                } else if (f.balance < 0) {
-                    balText = `Owes you $${Math.abs(f.balance).toFixed(2)}`;
-                    balClass = 'owes-you';
-                } else {
-                    balText = 'Settled';
-                }
-
-                fList.innerHTML += `
-                    <li>
-                        <span>${f.name}</span>
-                        <span class="owe-text ${balClass}">${balText}</span>
-                    </li>
-                `;
-            });
-
-            // Render Table
-            const tbody = document.getElementById('split-table');
-            tbody.innerHTML = '';
-            splits.forEach(s => {
-                const totalPeople = friends.length + 1;
-                const splitAmt = (s.amount / totalPeople).toFixed(2);
-                let status = '';
-
-                if (s.payer === 'You') {
-                    status = `<span class="owes-you">You lent $${(s.amount - splitAmt).toFixed(2)}</span>`;
-                } else {
-                    status = `<span class="you-owe">You owe $${splitAmt}</span>`;
-                }
-
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${s.desc}</td>
-                        <td>$${s.amount}</td>
-                        <td>${s.payer}</td>
-                        <td>${status}</td>
-                    </tr>
-                `;
-            });
-        }
-
-        render();
-        function logout() {
-            if (confirm("Are you sure you want to logout?")) {
-                localStorage.removeItem('currentUser');
-                window.location.href = 'login.html';
-            }
-        }
-    </script>
+    <script src="splitwise.js"></script>
 </body>
 
 </html>
