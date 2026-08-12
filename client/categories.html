@@ -279,67 +279,7 @@
         </main>
     </div>
 
-    <script>
-        const CAT_KEY = 'finance_tracker_categories';
-
-        // Default Data
-        const defaults = {
-            expense: ['Food', 'Rent', 'Bills', 'Transport', 'Entertainment', 'Shopping', 'Health'],
-            income: ['Salary', 'Freelance', 'Investments', 'Gifts', 'Rental Income']
-        };
-
-        // Load or Init
-        let categories = JSON.parse(localStorage.getItem(CAT_KEY)) || defaults;
-
-        function renderLists() {
-            // Render Expense
-            const exList = document.getElementById('expense-list');
-            exList.innerHTML = '';
-            categories.expense.forEach((cat, index) => {
-                exList.innerHTML += `<li>${cat} <span class="material-icons-sharp delete-btn" onclick="removeCat('expense', ${index})">delete</span></li>`;
-            });
-
-            // Render Income
-            const inList = document.getElementById('income-list');
-            inList.innerHTML = '';
-            categories.income.forEach((cat, index) => {
-                inList.innerHTML += `<li>${cat} <span class="material-icons-sharp delete-btn" onclick="removeCat('income', ${index})">delete</span></li>`;
-            });
-        }
-
-        function addCategory(e, type) {
-            e.preventDefault();
-            const inputId = type === 'expense' ? 'new-expense-cat' : 'new-income-cat';
-            const val = document.getElementById(inputId).value;
-
-            if (val) {
-                categories[type].push(val);
-                saveAndRender();
-                document.getElementById(inputId).value = '';
-            }
-        }
-
-        function removeCat(type, index) {
-            if (confirm('Remove this category?')) {
-                categories[type].splice(index, 1);
-                saveAndRender();
-            }
-        }
-
-        function saveAndRender() {
-            localStorage.setItem(CAT_KEY, JSON.stringify(categories));
-            renderLists();
-        }
-
-        // Init
-        renderLists();
-        function logout() {
-            if (confirm("Are you sure you want to logout?")) {
-                localStorage.removeItem('currentUser');
-                window.location.href = 'login.html';
-            }
-        }
-    </script>
+    <script src="categories.js"></script>
 </body>
 
 </html>
