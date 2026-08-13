@@ -299,7 +299,7 @@
 
                 <div class="setting-item">
                     <p>Currency Symbol</p>
-                    <span class="text-muted">USD ($) - Default</span>
+                    <span class="text-muted">INR (₹) - Default</span>
                 </div>
             </div>
 
@@ -312,49 +312,8 @@
             </div>
         </main>
     </div>
-
-    <script>
-        // --- THEME LOGIC ---
-        // Check if theme preference exists
-        if (localStorage.getItem('theme') === 'light') {
-            document.body.classList.add('light-mode');
-            updateToggler(true);
-        }
-
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
-            const isLight = document.body.classList.contains('light-mode');
-
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-            updateToggler(isLight);
-        }
-
-        function updateToggler(isLight) {
-            const toggler = document.querySelector('.theme-toggler');
-            if (isLight) {
-                toggler.children[0].classList.remove('active');
-                toggler.children[1].classList.add('active');
-            } else {
-                toggler.children[0].classList.add('active');
-                toggler.children[1].classList.remove('active');
-            }
-        }
-
-        // --- DATA LOGIC ---
-        function clearData() {
-            if (confirm("Are you sure? This will wipe all Expenses, Income, Budgets, and Categories.")) {
-                localStorage.clear();
-                alert("App has been reset.");
-                window.location.href = 'dashboard.html';
-            }
-        }
-        function logout() {
-            if (confirm("Are you sure you want to logout?")) {
-                localStorage.removeItem('currentUser');
-                window.location.href = 'login.html';
-            }
-        }
-    </script>
+<script src="settings.js"></script>
+    
 </body>
 
 </html>

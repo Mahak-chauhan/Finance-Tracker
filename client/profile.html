@@ -260,41 +260,7 @@
         </main>
     </div>
 
-    <script>
-        // AUTH GUARD
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (!currentUser) window.location.href = 'login.html';
-
-        // Load Data
-        document.getElementById('p-name').value = currentUser.name;
-        document.getElementById('p-email').value = currentUser.email;
-        document.getElementById('p-joined').value = currentUser.joined || 'Unknown';
-        document.getElementById('avatar-initial').innerText = currentUser.name.charAt(0).toUpperCase();
-
-        // Update Profile
-        document.getElementById('profile-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            currentUser.name = document.getElementById('p-name').value;
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-
-            // Also update the main users list
-            let users = JSON.parse(localStorage.getItem('users')) || [];
-            let index = users.findIndex(u => u.email === currentUser.email);
-            if (index !== -1) {
-                users[index].name = currentUser.name;
-                localStorage.setItem('users', JSON.stringify(users));
-            }
-            alert('Profile Updated!');
-            window.location.reload();
-        });
-
-        function logout() {
-            if (confirm("Are you sure you want to logout?")) {
-                localStorage.removeItem('currentUser');
-                window.location.href = 'login.html';
-            }
-        }
-    </script>
+    <script src="profile.js"></script>
 </body>
 
 </html>

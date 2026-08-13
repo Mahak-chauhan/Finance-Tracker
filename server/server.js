@@ -10,6 +10,8 @@ const splitwiseFriendRoutes = require("./routes/splitwiseFriendRoutes");
 const splitwiseRoutes = require("./routes/splitwiseRoutes");
 const budgetRoutes = require("./routes/budgetRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
+const profileRoutes = require("./routes/profileRoutes");
+const settingsRoutes = require("./routes/settingsRoutes");
 dotenv.config();
 console.log("MONGO_URI =", process.env.MONGO_URI);
 
@@ -25,9 +27,11 @@ const app = express();
 app.use("/api/budgets", budgetRoutes);
     app.use("/api/expenses", expenseRoutes);
     app.use("/api/income", incomeRoutes);
+    app.use("/api/profile", profileRoutes);
     app.use("/api/splitwise", splitwiseRoutes);
     app.use("/api/splitwise/friends", splitwiseFriendRoutes);
 app.use("/api/transactions", transactionRoutes);
+app.use("/api/settings", settingsRoutes);
 
 app.get("/", (req, res) => {
     res.json({
