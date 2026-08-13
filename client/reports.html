@@ -346,69 +346,7 @@
         </main>
     </div>
 
-    <script>
-        const STORAGE_KEY = 'finance_tracker_data';
-        const transactions = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-        // Set default to current month
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        document.getElementById('report-month').value = `${yyyy}-${mm}`;
-
-        function generateReport() {
-            const selectedMonth = document.getElementById('report-month').value; // "2023-10"
-            document.getElementById('report-date-label').innerText = `Period: ${selectedMonth}`;
-
-            // Filter data
-            const filtered = transactions.filter(t => t.date.startsWith(selectedMonth));
-
-            // Calc Totals
-            let inc = 0, exp = 0;
-            const catBreakdown = {};
-
-            filtered.forEach(t => {
-                if (t.type === 'income') inc += t.amount;
-                if (t.type === 'expense') exp += t.amount;
-
-                // Group by category
-                if (!catBreakdown[t.category]) catBreakdown[t.category] = { amount: 0, type: t.type };
-                catBreakdown[t.category].amount += t.amount;
-            });
-
-            // Update UI
-            document.getElementById('rep-inc').innerText = `$${inc.toFixed(2)}`;
-            document.getElementById('rep-exp').innerText = `$${exp.toFixed(2)}`;
-            document.getElementById('rep-bal').innerText = `$${(inc - exp).toFixed(2)}`;
-
-            // Render Table
-            const tbody = document.getElementById('report-body');
-            tbody.innerHTML = '';
-
-            for (const [cat, data] of Object.entries(catBreakdown)) {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${cat}</td>
-                    <td>${data.type.toUpperCase()}</td>
-                    <td>$${data.amount.toFixed(2)}</td>
-                `;
-                tbody.appendChild(tr);
-            }
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No transactions found for this month.</td></tr>';
-            }
-        }
-
-        // Init
-        generateReport();
-        function logout() {
-            if (confirm("Are you sure you want to logout?")) {
-                localStorage.removeItem('currentUser');
-                window.location.href = 'login.html';
-            }
-        }
-    </script>
+    <script src="reports.js"></script>
 </body>
 
 </html>
