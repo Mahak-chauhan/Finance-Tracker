@@ -129,6 +129,55 @@ function renderExpenses(expenses) {
 
     });
 
+
+}
+async function loadExpenseCategories() {
+    try {
+        const response = await fetch(
+            "http://localhost:5000/api/categories",
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.log(data.message);
+            return;
+        }
+
+        const categorySelect =
+            document.getElementById("category");
+
+        categorySelect.innerHTML =
+            '<option value="">Select Category</option>';
+
+        const expenseCategories =
+            data.filter(
+                category => category.type === "expense"
+            );
+
+        expenseCategories.forEach(category => {
+
+            const option =
+                document.createElement("option");
+
+            option.value = category.name;
+            option.textContent = category.name;
+
+            categorySelect.appendChild(option);
+        });
+
+    } catch (error) {
+        console.log(
+            "Unable to load categories:",
+            error
+        );
+    }
 }
 async function deleteExpense(id) {
 
@@ -144,7 +193,9 @@ async function deleteExpense(id) {
 
     });
 
-    loadExpenses();
+    
+loadExpenses();
 
 }
+loadExpenseCategories();
 loadExpenses();
